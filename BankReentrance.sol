@@ -24,6 +24,9 @@ contract Bank {
     
     function withdraw(uint amount) public {
         require(balances[msg.sender] >= amount, "Withdrawal amount too large");
+
+        // use fallback function to send amount as send and transfer use 2300 gas
+        // https://solidity.readthedocs.io/en/v0.6.1/units-and-global-variables.html#members-of-address-types
         (bool success, ) = msg.sender.call.value(amount)("");
         require(success, "fail to send amount");
         balances[msg.sender] -= amount;
